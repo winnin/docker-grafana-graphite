@@ -1,0 +1,15 @@
+#!/bin/bash
+
+DATE=$(date +"%y-%m-%d")
+BACKUPDIR="/backups"
+WORKDIR="/opt"
+S3DIR='s3://winnin-bkp/grafana/'
+BACKUPFILE=$BACKUPDIR/$DATE.tar.gz
+
+mkdir $BACKUPDIR
+
+cd $WORKDIR
+rm -f $BACKUPFILE
+tar -zcf $BACKUPFILE grafana-service
+
+/usr/bin/s3cmd put $BACKUPFILE $S3DIR
